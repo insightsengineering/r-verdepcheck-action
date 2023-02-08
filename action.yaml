@@ -18,7 +18,8 @@ runs:
   steps:
     - name: Run minimum dependency check
       run: |
-        Rscript ${GITHUB_ACTION_PATH}/mindepscheck.R
+        ls -la
+        Rscript ${GITHUB_ACTION_PATH}/rmindepscheck.R
       shell: bash
       env:
         GITHUB_PAT: "${{ inputs.github-token }}"
