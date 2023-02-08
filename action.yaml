@@ -19,6 +19,7 @@ runs:
     - name: Run minimum dependency check
       run: |
         ls -la
+        pwd
         Rscript ${GITHUB_ACTION_PATH}/rmindepscheck.R
       shell: bash
       env:
