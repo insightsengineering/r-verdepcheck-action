@@ -1,0 +1,24 @@
+---
+name: R minimum dependency check
+author: Insights Engineering
+description: Check if R package works correctly with minimum version of dependencies installed
+
+inputs:
+  github-token:
+    description: Token to clone dependencies from GitHub repositories.
+    required: false
+    default: ""
+
+branding:
+  icon: 'refresh-ccw'
+  color: 'blue'
+
+runs:
+  using: composite
+  steps:
+    - name: Run minimum dependency check
+      run: |
+        Rscript ${GITHUB_ACTION_PATH}/mindepscheck.R
+      shell: bash
+      env:
+        GITHUB_PAT: "${{ inputs.github-token }}"
