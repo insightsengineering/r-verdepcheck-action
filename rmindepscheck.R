@@ -100,7 +100,7 @@ new_min_deps_installation_proposal <- function(ref) {
 }
 
 ## tests
-ref <- "."
+ref <- "local::."
 
 x <- new_min_deps_installation_proposal(ref)
 x$solve()
