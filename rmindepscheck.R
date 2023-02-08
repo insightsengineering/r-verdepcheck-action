@@ -23,7 +23,7 @@ get_gh_tags <- function(org, repo) {
 # extract version from git tag
 # this assumes common practice of version 1.2.3 is tagged with "[v]1.2.3"
 get_ver_from_tag <- function(x) {
-  package_version(gsub("^v", "", tags), strict = FALSE)
+  package_version(gsub("^v", "", x), strict = FALSE)
 }
 
 # main function
