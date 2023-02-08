@@ -106,11 +106,14 @@ x <- new_min_deps_installation_proposal(ref)
 x$solve()
 x$get_solution()
 stopifnot(x$get_solution()$status == "OK")
+
+x$create_lockfile("pkg.lock") # if needed as an output artifact
+x$draw() # for debugging
+
 x$download()
 x$install()
 
-# x$create_lockfile("pkg.lock") # if needed as an output artifact
-# x$draw() # for debugging
+
 
 # R CMD CHECK with min deps installed
 install.packages("rcmdcheck")
