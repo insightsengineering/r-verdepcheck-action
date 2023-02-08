@@ -22,6 +22,7 @@ runs:
         ls -la repository
         pwd
         Rscript ${GITHUB_ACTION_PATH}/rmindepscheck.R
+        ls -la
       shell: bash
       env:
         GITHUB_PAT: "${{ inputs.github-token }}"
