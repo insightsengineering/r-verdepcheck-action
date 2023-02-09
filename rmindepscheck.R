@@ -47,12 +47,12 @@ new_min_deps_installation_proposal <- function(ref) {
       i_ver <- deps[i, "version"]
 
       # check if bioconductor package #@TODO: would be good to pre-set it somehow in DESCRIPTION file to avoid this check
-      # if (is(i_ref_parsed, "remote_ref_standard")) {
-      #   if (any(vapply(i_pkg_cache$sources, grepl, logical(1), pattern = paste0(pkgcache::bioc_repos(), collapse = "|")))) {
-      #     i_ref <- sprintf("bioc::%s", i_ref)
-      #     i_ref_parsed <- pkgdepends::parse_pkg_ref(i_ref)
-      #   }
-      # }
+      if (is(i_ref_parsed, "remote_ref_standard")) {
+        if (any(vapply(i_pkg_cache$sources, grepl, logical(1), pattern = paste0(pkgcache::bioc_repos(), collapse = "|")))) {
+          i_ref <- sprintf("bioc::%s", i_ref)
+          i_ref_parsed <- pkgdepends::parse_pkg_ref(i_ref)
+        }
+      }
 
       # resolve minimal version
       if (is(i_ref_parsed, "remote_ref_standard") || is(i_ref_parsed, "remote_ref_cran")) {
