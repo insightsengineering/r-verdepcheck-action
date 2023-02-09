@@ -6,10 +6,14 @@
 # Initial assessment of recursive functionality oftentimes lead to install compilation error of very old pkgs, errors in historical package releases that are not valid anymore or install requests of archived and not maintained pkgs. It's hard to decide what to do with it.
 # The functionality relies heavily on pkgdepends::new_pkg_installation_proposal and its dependency resolving mechanism.
 
-
+cat("---\n")
+cat("Install required packages\n")
 install.packages(c("httr", "pak", "pkgdepends", "pkgcache"))
 
 # get all tags
+# @param org (character(1)) GH org name
+# @param repo (character(1)) repo name within org
+# @return (character(n)) vector with all tags
 get_gh_tags <- function(org, repo) {
   url_str <- sprintf("https://api.github.com/repos/%s/%s/git/refs/tags", org, repo)
   resp <- httr::GET(url_str, httr::add_headers(
@@ -21,14 +25,16 @@ get_gh_tags <- function(org, repo) {
   gsub("^refs/tags/", "", vapply(resp_json, `[[`, character(1), "ref"))
 }
 # extract version from git tag
-# this assumes common practice of version 1.2.3 is tagged with "[v]1.2.3"
+# this assumes common practice that pkg version 1.2.3 is usually tagged with "[v]1.2.3"
+# @param x (character(n)) vector with tag names
+# @return (character(n)) vector with valid package number, NA for non-convertable values
 get_ver_from_tag <- function(x) {
   package_version(gsub("^v", "", x), strict = FALSE)
 }
 
 # main function
-# for ref description please see https://r-lib.github.io/pkgdepends/reference/pkg_refs.html
-# ref could point to a local dir (with R package) or GH repo
+# @param ref (character(1)) package reference, for details please see: `? pkgdepends::pkg_refs`
+# @return (pkg_installation_proposal) object created with `pkgdepends::new_pkg_installation_proposal`
 new_min_deps_installation_proposal <- function(ref) {
   x <- pak::pkg_download(ref)
   deps <- x$deps[[1]]
@@ -91,33 +97,40 @@ new_min_deps_installation_proposal <- function(ref) {
     character(1)
   )
 
-  cat("---\n")
-  cat("Package dependencies using minimal verison strategy:\n")
-  for (i in deps_refs) cat(sprintf("%s\n", i))
-  cat("---\n")
-
-  res <- pkgdepends::new_pkg_installation_proposal(deps_refs, config = list(library = tempfile()))
-  res
+  pkgdepends::new_pkg_installation_proposal(deps_refs, config = list(library = tempfile()))
 }
 
 ## tests
 args = commandArgs(trailingOnly=TRUE)
-ref <- paste0("local::./", args[1])
+ref_path <- file.path(".", args[1])
+ref_pak <- paste0("local::", ref_path)
 
-x <- new_min_deps_installation_proposal(ref)
+cat("---\n")
+cat("Extract minimal versions of package dependencies...\n")
+x <- new_min_deps_installation_proposal(ref_pak)
+
+cat("---\n")
+cat("Package dependencies using minimal verison strategy:\n")
+x$get_refs()
+
+cat("---\n")
+cat("Solve package dependencies...\n")
 x$solve()
+cat("Solution:\n")
 x$get_solution()
-stopifnot(x$get_solution()$status == "OK")
+stopifnot("Dependency solver resulted in error - please see the log for details" = x$get_solution()$status == "OK")
+cat("Solution (tree view):\n")
+x$draw()
+x$create_lockfile("pkg.lock")
 
-x$create_lockfile("pkg.lock") # if needed as an output artifact
-x$draw() # for debugging
-
+cat("---\n")
+cat("Download all packages...\n")
 x$download()
+cat("---\n")
+cat("Install all packages...\n")
 x$install()
 
-
-
-# R CMD CHECK with min deps installed
 install.packages("rcmdcheck")
 libpath <- x$get_config()$get("library")
-rcmdcheck::rcmdcheck(ref, libpath = libpath)
+res_check <- rcmdcheck::rcmdcheck(ref_path, libpath = libpath)
+stopifnot("R CMD CHECK resulted in error - please see the log for details" = res_check$status == 0)
