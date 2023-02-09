@@ -1,10 +1,3 @@
-# resolve & install minimal dependencies for a given package + execute R CMD CHECK with min deps installed
-# The aim is to check correctness of a DESCRIPTION file, i.e. min deps specification
-# This covers only _direct_ deps, i.e. it does not resolve recursively dependencies of dependencies.
-# Example: A -imports-> B -imports-> C
-# When executed for A, script would read A's DESCRIPTION file, determine minimal version of B and install it using latest version of C (i.e. base package installation)
-# Initial assessment of recursive functionality oftentimes lead to install compilation error of very old pkgs, errors in historical package releases that are not valid anymore or install requests of archived and not maintained pkgs. It's hard to decide what to do with it.
-# The functionality relies heavily on pkgdepends::new_pkg_installation_proposal and its dependency resolving mechanism.
 
 cat("---\n")
 cat("Install required packages\n")
