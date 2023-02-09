@@ -100,7 +100,8 @@ new_min_deps_installation_proposal <- function(ref) {
 }
 
 ## tests
-ref <- "local::./repository"
+args = commandArgs(trailingOnly=TRUE)
+ref <- paste0("local::./", args[1])
 
 x <- new_min_deps_installation_proposal(ref)
 x$solve()

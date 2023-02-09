@@ -8,6 +8,10 @@ inputs:
     description: Token to clone dependencies from GitHub repositories.
     required: false
     default: ""
+  repository-path:
+    description: Directory where the checked package has been cloned.
+    required: false
+    default: repository
 
 branding:
   icon: 'refresh-ccw'
@@ -18,11 +22,7 @@ runs:
   steps:
     - name: Run minimum dependency check
       run: |
-        ls -la
-        ls -la repository
-        pwd
-        Rscript ${GITHUB_ACTION_PATH}/rmindepscheck.R
-        ls -la
+        Rscript ${GITHUB_ACTION_PATH}/rmindepscheck.R ${{ inputs.repository-path }}
       shell: bash
       env:
         GITHUB_PAT: "${{ inputs.github-token }}"
