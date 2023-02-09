@@ -134,7 +134,7 @@ x$install()
 cat("---\n")
 sessionInfo()
 cat("---\n")
-installed.packages()
+installed.packages()[, c("LibPath", "Version")]
 cat("---\n")
 libpath <- x$get_config()$get("library")
 installed.packages(lib.loc = libpath)[, c("LibPath", "Version")]
@@ -147,7 +147,7 @@ cat("---\n")
 cat("R CMD CHECK...\n")
 install.packages("rcmdcheck")
 libpath <- x$get_config()$get("library")
-res_check <- rcmdcheck::rcmdcheck(ref_path, libpath = libpath)
+res_check <- rcmdcheck::rcmdcheck(ref_path, libpath = libpath, build_args = c("--no-build-vignettes"))
 cat("---\n")
 cat("R CMD CHECK sessioninfo:\n")
 res_check$session_info$packages[, c("package", "ondiskversion", "source", "library")]
