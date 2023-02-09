@@ -46,7 +46,7 @@ new_min_deps_installation_proposal <- function(ref) {
       i_op <- deps[i, "op"]
       i_ver <- deps[i, "version"]
 
-      # check if bioconductor package #@TODO: would be good to pre-set it somehow in DESCRIPTION file to avoid this check
+      # check if package from Bioconductor
       if (is(i_ref_parsed, "remote_ref_standard")) {
         i_pkg_cache <- pkgcache::meta_cache_list(i_pkg)
         if (any(vapply(unlist(i_pkg_cache$sources), grepl, logical(1), pattern = paste0(pkgcache::bioc_repos(), collapse = "|")))) {
@@ -59,9 +59,10 @@ new_min_deps_installation_proposal <- function(ref) {
       if (is(i_ref_parsed, "remote_ref_standard") || is(i_ref_parsed, "remote_ref_cran")) {
         i_pkg_cache <- pkgcache::meta_cache_list(i_pkg)
         i_pkg_cache_archive <- pkgcache::cran_archive_list(package = i_pkg)
-        pv_valid <- pv_all <- sort(package_version(unique(c(i_pkg_cache$version, i_pkg_cache_archive$version))), decreasing = TRUE)
+        pv_all <- sort(package_version(unique(c(i_pkg_cache$version, i_pkg_cache_archive$version))), decreasing = TRUE)
+        pv_valid <- Filter(Negate(is.na), pv_all)
         if (i_op != "") {
-          pv_valid <- Filter(function(x) !is.na(x) && do.call(i_op, list(x, package_version(i_ver))), pv_all)
+          pv_valid <- Filter(function(x) do.call(i_op, list(x, package_version(i_ver))), pv_valid)
         }
         i_ver <- as.character(min(pv_valid))
         i_ref <- sprintf("%s@%s", i_ref, i_ver)
@@ -69,10 +70,9 @@ new_min_deps_installation_proposal <- function(ref) {
       } else if (is(i_ref_parsed, "remote_ref_github")) {
         tags <- get_gh_tags(i_ref_parsed$username, i_ref_parsed$repo)
         pv_all <- get_ver_from_tag(tags)
+        pv_valid <- Filter(Negate(is.na), pv_all)
         if (i_op != "") {
-          pv_valid <- Filter(function(x) !is.na(x) && do.call(i_op, list(x, package_version(i_ver))), pv_all)
-        } else {
-          pv_valid <- Filter(Negate(is.na), pv_all)
+          pv_valid <- Filter(function(x) do.call(i_op, list(x, package_version(i_ver))), pv_valid)
         }
         tag_min <- tags[which(pv_all == min(pv_valid))]
         i_ref <- sprintf("%s/%s@%s", i_ref_parsed$username, i_ref_parsed$repo, tag_min)
