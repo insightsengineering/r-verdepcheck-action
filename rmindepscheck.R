@@ -130,25 +130,11 @@ cat("---\n")
 cat("Install all packages...\n")
 x$install()
 
-# debug lines
-cat("---\n")
-sessionInfo()
-cat("---\n")
-installed.packages()[, c("LibPath", "Version")]
-cat("---\n")
-libpath <- x$get_config()$get("library")
-installed.packages(lib.loc = libpath)[, c("LibPath", "Version")]
-cat("---\n")
-list.files(libpath)
-cat("---\n")
-
-
 cat("---\n")
 cat("R CMD CHECK...\n")
 install.packages("rcmdcheck")
 libpath <- x$get_config()$get("library")
+# @TODO: wait for https://github.com/r-lib/rcmdcheck/issues/195
+# as a workaround - skip vignettes
 res_check <- rcmdcheck::rcmdcheck(ref_path, libpath = libpath, args = c("--ignore-vignettes"), build_args = c("--no-build-vignettes"))
-cat("---\n")
-cat("R CMD CHECK sessioninfo:\n")
-res_check$session_info$packages[, c("package", "ondiskversion", "source", "library")]
 stopifnot("R CMD CHECK resulted in error - please see the log for details" = res_check$status == 0)
