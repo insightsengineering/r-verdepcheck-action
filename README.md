@@ -65,7 +65,7 @@ jobs:
           path: repository
 
       - name: Run dependency check
-        uses: insightsengineering/r-min-deps-check-action@v1
+        uses: insightsengineering/r-mindepscheck-action@v1
         with:
           github-token: ${{ secrets.REPO_GITHUB_TOKEN }}
 
