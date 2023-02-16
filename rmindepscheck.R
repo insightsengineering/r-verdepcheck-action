@@ -107,8 +107,7 @@ new_min_deps_installation_proposal <- function(path) {
 }
 
 ## tests
-#args = commandArgs(trailingOnly=TRUE)
-args <- "teal.code"
+args = commandArgs(trailingOnly=TRUE)
 path <- normalizePath(file.path(".", args[1]))
 
 cat("---\n")
@@ -124,7 +123,7 @@ cat("Solve package dependencies...\n")
 x$solve()
 cat("Solution:\n")
 x$get_solution()
-stopifnot("Dependency solver resulted in error - please see the log for details" = x$get_solution()$status == "OK")
+x$stop_for_solution_error()
 cat("Solution (tree view):\n")
 x$draw()
 x$create_lockfile("pkg.lock")
