@@ -135,5 +135,5 @@ install.packages("rcmdcheck")
 libpath <- x$get_config()$get("library")
 # @TODO: wait for https://github.com/r-lib/rcmdcheck/issues/195
 # as a workaround - skip vignettes
-res_check <- rcmdcheck::rcmdcheck(ref_path, libpath = libpath, args = c("--ignore-vignettes"), build_args = c("--no-build-vignettes"))
+res_check <- rcmdcheck::rcmdcheck(path, libpath = libpath, args = c("--ignore-vignettes"), build_args = c("--no-build-vignettes"))
 stopifnot("R CMD CHECK resulted in error - please see the log for details" = res_check$status == 0)
