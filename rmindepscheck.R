@@ -86,7 +86,7 @@ new_min_deps_installation_proposal <- function(path) {
       # @TODO: wait for https://github.com/r-lib/pak/issues/122
       # as a suggested workaround - use GH mirror of CRAN
       if (is(i_ref_parsed, "remote_ref_standard") || is(i_ref_parsed, "remote_ref_cran")) {
-        i_ref <- gsub("^.*::", "cran/",  i_ref_parsed$ref)
+        i_ref <- sprintf("cran/%s@%s", i_pkg, i_ver)
         i_ref_parsed <- pkgdepends::parse_pkg_ref(i_ref)
       }
 
@@ -123,6 +123,8 @@ x$create_lockfile("pkg.lock")
 cat("---\n")
 cat("Download all packages...\n")
 x$download()
+x$stop_for_download_error()
+
 cat("---\n")
 cat("Install all packages...\n")
 x$install()
