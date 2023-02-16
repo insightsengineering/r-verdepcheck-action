@@ -33,10 +33,10 @@ get_ver_from_tag <- function(x) {
 }
 
 # main function
-# @param ref (character(1)) package reference, for details please see: `? pkgdepends::pkg_refs`
+# @param path (character(1)) package path
 # @return (pkg_installation_proposal) object created with `pkgdepends::new_pkg_installation_proposal`
-new_min_deps_installation_proposal <- function(ref) {
-  x <- pak::pkg_download(ref)
+new_min_deps_installation_proposal <- function(path) {
+  x <- pak::local_deps(path, dependencies = FALSE, upgrade = FALSE)
   deps <- x$deps[[1]]
 
   #trim deps
@@ -52,11 +52,17 @@ new_min_deps_installation_proposal <- function(ref) {
       i_op <- deps[i, "op"]
       i_ver <- deps[i, "version"]
 
+      # In case ref come from Remotes field -> check if CRAN pkg and overwrite ref type
+      if (is(i_ref_parsed, "remote_ref_github") && nrow(pkgcache::meta_cache_list(i_pkg))) {
+        i_ref <- sprintf("cran::%s", i_pkg)
+        i_ref_parsed <- pkgdepends::parse_pkg_ref(i_ref)
+      }
+
       # check if package from Bioconductor
       if (is(i_ref_parsed, "remote_ref_standard")) {
         i_pkg_cache <- pkgcache::meta_cache_list(i_pkg)
-        if (any(vapply(unlist(i_pkg_cache$sources), grepl, logical(1), pattern = paste0(pkgcache::bioc_repos(), collapse = "|")))) {
-          i_ref <- sprintf("bioc::%s", i_ref)
+        if (any(i_pkg_cache$mirror %in% pkgcache::bioc_repos())) {
+          i_ref <- gsub("^.*::", "bioc::",  i_ref_parsed$ref)
           i_ref_parsed <- pkgdepends::parse_pkg_ref(i_ref)
         }
       }
@@ -88,7 +94,7 @@ new_min_deps_installation_proposal <- function(ref) {
       # @TODO: wait for https://github.com/r-lib/pak/issues/122
       # as a suggested workaround - use GH mirror of CRAN
       if (is(i_ref_parsed, "remote_ref_standard") || is(i_ref_parsed, "remote_ref_cran")) {
-        i_ref <- sprintf("cran/%s", i_ref)
+        i_ref <- gsub("^.*::", "cran/",  i_ref_parsed$ref)
         i_ref_parsed <- pkgdepends::parse_pkg_ref(i_ref)
       }
 
@@ -101,13 +107,13 @@ new_min_deps_installation_proposal <- function(ref) {
 }
 
 ## tests
-args = commandArgs(trailingOnly=TRUE)
-ref_path <- file.path(".", args[1])
-ref_pak <- paste0("local::", ref_path)
+#args = commandArgs(trailingOnly=TRUE)
+args <- "teal.code"
+path <- normalizePath(file.path(".", args[1]))
 
 cat("---\n")
 cat("Extract minimal versions of package dependencies...\n")
-x <- new_min_deps_installation_proposal(ref_pak)
+x <- new_min_deps_installation_proposal(path)
 
 cat("---\n")
 cat("Package dependencies using minimal verison strategy:\n")
