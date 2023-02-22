@@ -101,16 +101,21 @@ new_min_deps_installation_proposal <- function(path) {
 args <- commandArgs(trailingOnly = TRUE)
 path <- normalizePath(file.path(".", args[1]))
 build_args <- strsplit(args[2], " ")[[1]]
+if (is.na(build_args) || build_args == "") build_args <- character(0)
 check_args <- strsplit(args[3], " ")[[1]]
+if (is.na(check_args) || check_args == "") check_args <- character(0)
 
 cat("---\n")
 cat("Cat script parameters\n")
 cat("path:\n")
 cat(path)
+cat("\n")
 cat("build_args:\n")
 cat(build_args)
+cat("\n")
 cat("check_args:\n")
 cat(check_args)
+cat("\n")
 
 cat("---\n")
 cat("Extract minimal versions of package dependencies...\n")
