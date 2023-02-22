@@ -45,10 +45,6 @@ runs:
           export $(tr '\n' ' ' < /tmp/dotenv.env)
         }
         fi
-        echo "Env:"
-        env
-        echo "check-args = ${{ inputs.check-args }}"
-        echo "build-args = ${{ inputs.build-args }}"
         Rscript ${GITHUB_ACTION_PATH}/rmindepscheck.R ${{ inputs.repository-path }}
       shell: bash
       env:
