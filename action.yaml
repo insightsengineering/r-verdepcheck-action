@@ -1,0 +1,51 @@
+---
+name: R minimum dependency check
+author: Insights Engineering
+description: Derieve minimum version of package dependencies, install and execute R CMD CHECK
+
+inputs:
+  github-token:
+    description: Token to clone dependencies from GitHub repositories.
+    required: false
+    default: ""
+  repository-path:
+    description: Directory where the checked package has been cloned.
+    required: false
+    default: repository
+  check-args:
+    description: Optional value of args argument to rcmdcheck::rcmdcheck in form of a string with space as delimeter, e.g. "--no-examples --no-tests".
+    required: false
+    default: ""
+  build-args:
+    description: Optional value of build_args argument to rcmdcheck::rcmdcheck in form of a string with space as delimeter, e.g. "--force --keep-empty-dirs".
+    required: false
+    default: ""
+  additional-env-vars:
+    description: |
+      Additional environment variables.
+      Example usage:
+        additional-env-vars: |
+          ABC=123
+          XYZ=456
+    required: false
+    default: ""
+
+branding:
+  icon: 'refresh-ccw'
+  color: 'blue'
+
+runs:
+  using: composite
+  steps:
+    - name: Run minimum dependency check
+      run: |
+        if [ "${{ inputs.additional-env-vars }}" != "" ]
+        then {
+          echo -e "${{ inputs.additional-env-vars }}" > /tmp/dotenv.env
+          export $(tr '\n' ' ' < /tmp/dotenv.env)
+        }
+        fi
+        Rscript ${GITHUB_ACTION_PATH}/rmindepscheck.R ${{ inputs.repository-path }} ${{ inputs.build-args }} ${{ inputs.check-args }}
+      shell: bash
+      env:
+        GITHUB_PAT: "${{ inputs.github-token }}"
