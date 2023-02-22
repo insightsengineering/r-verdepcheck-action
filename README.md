@@ -34,6 +34,39 @@ Insights Engineering
 
   _Default_: `""`
 
+* `repository-path`:
+
+  _Description_: Directory where the checked package has been cloned.
+
+  _Required_: `false`
+
+  _Default_: `repository`
+
+* `check-args`:
+
+  _Description_: Optional value of `args` argument to `rcmdcheck::rcmdcheck` in form of a string with space as delimeter, e.g. `"--no-examples --no-tests"`.
+
+  _Required_: `false`
+
+  _Default_: `""`
+
+* `build-args`:
+
+  _Description_: Optional value of `build_args` argument to `rcmdcheck::rcmdcheck` in form of a string with space as delimeter, e.g. `"--force --keep-empty-dirs"`.
+
+  _Required_: `false`
+
+  _Default_: `""`
+
+* `additional-env-vars`:
+
+  _Description_: Additional environment variables.
+
+  _Required_: `false`
+
+  _Default_: `""`
+
+
 ## Outputs
 
 None

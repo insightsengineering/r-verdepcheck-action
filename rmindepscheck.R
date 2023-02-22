@@ -44,7 +44,7 @@ new_min_deps_installation_proposal <- function(path) {
       i_op <- deps[i, "op"]
       i_ver <- deps[i, "version"]
 
-      # In case ref come from Remotes field -> check if CRAN pkg and overwrite ref type
+      # In case GH-type ref comes from Remotes field -> check if CRAN pkg first and if yes - overwrite ref type
       if (is(i_ref_parsed, "remote_ref_github") && nrow(pkgcache::meta_cache_list(i_pkg))) {
         i_ref <- sprintf("cran::%s", i_pkg)
         i_ref_parsed <- pkgdepends::parse_pkg_ref(i_ref)
@@ -98,9 +98,19 @@ new_min_deps_installation_proposal <- function(path) {
   pkgdepends::new_pkg_installation_proposal(deps_refs, config = list(library = tempfile()))
 }
 
-## tests
-args = commandArgs(trailingOnly=TRUE)
+args <- commandArgs(trailingOnly = TRUE)
 path <- normalizePath(file.path(".", args[1]))
+build_args <- strsplit(args[2], " ")[[1]]
+check_args <- strsplit(args[3], " ")[[1]]
+
+cat("---\n")
+cat("Cat script parameters\n")
+cat("path:\n")
+cat(path)
+cat("build_args:\n")
+cat(build_args)
+cat("check_args:\n")
+cat(check_args)
 
 cat("---\n")
 cat("Extract minimal versions of package dependencies...\n")
@@ -135,5 +145,10 @@ install.packages("rcmdcheck")
 libpath <- x$get_config()$get("library")
 # @TODO: wait for https://github.com/r-lib/rcmdcheck/issues/195
 # as a workaround - skip vignettes
-res_check <- rcmdcheck::rcmdcheck(path, libpath = libpath, args = c("--ignore-vignettes"), build_args = c("--no-build-vignettes"))
+res_check <- rcmdcheck::rcmdcheck(
+  path,
+  libpath = libpath,
+  args = c("--ignore-vignettes", check_args),
+  build_args = c("--no-build-vignettes", build_args)
+)
 stopifnot("R CMD CHECK resulted in error - please see the log for details" = res_check$status == 0)
