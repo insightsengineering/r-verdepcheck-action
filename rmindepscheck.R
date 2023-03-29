@@ -4,7 +4,7 @@ catbr <- function() catnl("---")
 catbr()
 catnl("Install required packages")
 install.packages("remotes")
-remotes::install_github("insightsengineering/verdepcheck@*release")
+remotes::install_github("insightsengineering/verdepcheck")
 
 args <- commandArgs(trailingOnly = TRUE)
 path <- normalizePath(file.path(".", args[1]))
