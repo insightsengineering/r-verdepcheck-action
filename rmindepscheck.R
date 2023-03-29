@@ -16,7 +16,7 @@ if (is.na(check_args) || check_args == "") check_args <- character(0)
 # @TODO: wait for https://github.com/r-lib/rcmdcheck/issues/195
 # as a workaround - skip vignettes
 check_args <- unique(c(check_args, "--ignore-vignettes"))
-build_args <- unique(c(build_args, "--no-build-vigne"))
+build_args <- unique(c(build_args, "--no-build-vignettes"))
 
 catbr()
 catnl("Cat script parameters")
