@@ -15,9 +15,7 @@ flowchart LR
 
 When executed for A, script would read A's `DESCRIPTION` file, determine minimal version of B and install it using latest version of C (i.e. base package installation).
 
-Initial assessment of recursive functionality oftentimes leads to install compilation error of very old packages, errors in historical package releases that are not valid anymore or install requests of archived and not maintained packages. It's hard to decide what to do with it.
-
-The functionality relies heavily on `pkgdepends::new_pkg_installation_proposal` and its dependency resolving mechanism.
+Please see [`verdepcheck`](https://github.com/insightsengineering/verdepcheck) package documentation for details.
 
 ## Action type
 Composite
