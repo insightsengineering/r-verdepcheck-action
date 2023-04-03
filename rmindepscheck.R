@@ -1,9 +1,7 @@
-catnl <- function(x) cat(sprintf("%s\n", x))
-catbr <- function() catnl("---")
+catnl <- function(x = "") cat(sprintf("%s\n", x))
 
-catbr()
 catnl("Install required packages")
-install.packages("remotes")
+install.packages(c("remotes", "cli"))
 remotes::install_github("insightsengineering/verdepcheck")
 remotes::install_github("r-lib/rcmdcheck#196") # TODO: remove when merged / linked issue fixed
 
@@ -14,75 +12,58 @@ if (is.na(build_args) || build_args == "") build_args <- character(0)
 check_args <- strsplit(args[3], " ")[[1]]
 if (is.na(check_args) || check_args == "") check_args <- character(0)
 
-catbr()
-catnl("Cat script parameters")
+cli::cli_h1("Cat script parameters")
 catnl("path:")
 catnl(path)
-catnl("\n")
 catnl("build_args:")
 catnl(build_args)
-catnl("\n")
 catnl("check_args:")
 catnl(check_args)
-catnl("\n")
 
-catbr()
-catnl("Execute verdepcheck...")
+cli::cli_h1("Execute verdepcheck...")
 x <- verdepcheck::min_deps_check(path, check_args = check_args, build_args = build_args)
 
 
-catbr()
-catnl("Installation proposal:")
+cli::cli_h1("Installation proposal:")
 x$ip
 
-catbr()
-catnl("Package DESCRIPTION file used:")
+cli::cli_h2("Package DESCRIPTION file used:")
 catnl(readLines(gsub(".*::", "", x$ip$get_refs())))
 
-catbr()
-catnl("Dependency solution:")
+cli::cli_h2("Dependency solution:")
 x$ip$get_solution()
 
-catbr()
-catnl("Dependency resolution:")
-subset(x$ip$get_resolution(), , c(ref, package, version))
+cli::cli_h2("Dependency resolution:")
+print(subset(x$ip$get_resolution(), , c(ref, package, version)), n = Inf)
 
-catbr()
-catnl("Dependency resolution (tree):")
+cli::cli_h2("Dependency resolution (tree):")
 try(x$ip$draw())
 
-catbr()
-catnl("Create lockfile:")
+
+cli::cli_h1("Create lockfile...")
 try(x$ip$create_lockfile("pkg.lock"))
 
 
-catbr()
-catnl("R CMD CHECK:")
+cli::cli_h1("R CMD CHECK:")
 x$check
 
-catbr()
-catnl("R CMD CHECK status:")
+cli::cli_h2("R CMD CHECK status:")
 catnl(x$check$status)
 
-catbr()
-catnl("R CMD CHECK install out:")
+cli::cli_h2("R CMD CHECK install out:")
 cat(x$check$install_out)
 
-catbr()
-catnl("R CMD CHECK stdout:")
+cli::cli_h2("R CMD CHECK stdout:")
 cat(x$check$stdout)
 
-catbr()
-catnl("R CMD CHECK stderr:")
+cli::cli_h2("R CMD CHECK stderr:")
 cat(x$check$stderr)
 
-catbr()
-catnl("R CMD CHECK session info:")
+cli::cli_h2("R CMD CHECK session info:")
 x$check$session_info
 
-catbr()
-catnl("R CMD CHECK test output:")
+cli::cli_h2("R CMD CHECK test output:")
 lapply(x$check$test_output, cat)
 
-catbr()
+catnl()
 stopifnot("R CMD CHECK resulted in error - please see the above log for details" = x$check$status == 0)
