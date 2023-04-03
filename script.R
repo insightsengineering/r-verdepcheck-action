@@ -27,7 +27,7 @@ x <- verdepcheck::min_deps_check(path, check_args = check_args, build_args = bui
 cli::cli_h1("Installation proposal:")
 x$ip
 
-cli::cli_h2("Package DESCRIPTION file used:")
+cli::cli_h2("Package DESCRIPTION file used (see Remotes section):")
 catnl(readLines(gsub(".*::", "", x$ip$get_refs())))
 
 cli::cli_h2("Dependency solution:")
@@ -38,6 +38,12 @@ print(subset(x$ip$get_resolution(), , c(ref, package, version)), n = Inf)
 
 cli::cli_h2("Dependency resolution (tree):")
 try(x$ip$draw())
+
+# TODO: https://github.com/r-lib/pkgdepends/issues/305 - remove when fixed
+cli::cli_h2("Supplementary solution (experimental - use only when the above results in empty report):")
+xx <- pkgdepends::new_pkg_deps(desc::desc(gsub("deps::", "", x$ip$get_refs()))$get_remotes(), config = list(library = tempfile()))
+xx$solve()
+xx$get_solution()
 
 
 cli::cli_h1("Create lockfile...")
