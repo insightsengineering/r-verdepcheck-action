@@ -5,7 +5,7 @@ catbr()
 catnl("Install required packages")
 install.packages("remotes")
 remotes::install_github("insightsengineering/verdepcheck")
-remotes::install_github("r-lib/rcmdcheck@#196") # TODO: remove when merged / linked issue fixed
+remotes::install_github("r-lib/rcmdcheck#196") # TODO: remove when merged / linked issue fixed
 
 args <- commandArgs(trailingOnly = TRUE)
 path <- normalizePath(file.path(".", args[1]))
@@ -13,11 +13,6 @@ build_args <- strsplit(args[2], " ")[[1]]
 if (is.na(build_args) || build_args == "") build_args <- character(0)
 check_args <- strsplit(args[3], " ")[[1]]
 if (is.na(check_args) || check_args == "") check_args <- character(0)
-
-# @TODO: wait for https://github.com/r-lib/rcmdcheck/issues/195
-# as a workaround - skip vignettes
-check_args <- unique(c(check_args, "--ignore-vignettes"))
-build_args <- unique(c(build_args, "--no-build-vignettes"))
 
 catbr()
 catnl("Cat script parameters")
