@@ -45,7 +45,7 @@ runs:
           export $(tr '\n' ' ' < /tmp/dotenv.env)
         }
         fi
-        Rscript ${GITHUB_ACTION_PATH}/rmindepscheck.R ${{ inputs.repository-path }} ${{ inputs.build-args }} ${{ inputs.check-args }}
+        Rscript ${GITHUB_ACTION_PATH}/script.R ${{ inputs.repository-path }} ${{ inputs.build-args }} ${{ inputs.check-args }}
       shell: bash
       env:
         GITHUB_PAT: "${{ inputs.github-token }}"
