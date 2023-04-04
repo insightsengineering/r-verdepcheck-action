@@ -8,9 +8,7 @@ remotes::install_github("r-lib/rcmdcheck#196") # TODO: remove when merged / link
 args <- commandArgs(trailingOnly = TRUE)
 path <- normalizePath(file.path(".", Sys.getenv("VERDEPCHECK_REPOSITORY_PATH")))
 build_args <- strsplit(Sys.getenv("VERDEPCHECK_BUILD_ARGS"), " ")[[1]]
-if (is.na(build_args) || build_args == "") build_args <- character(0)
 check_args <- strsplit(Sys.getenv("VERDEPCHECK_CHECK_ARGS"), " ")[[1]]
-if (is.na(check_args) || check_args == "") check_args <- character(0)
 strategy <- strsplit(Sys.getenv("VERDEPCHECK_STRATEGY"), " ")[[1]]
 
 cli::cli_h1("Cat script parameters")
