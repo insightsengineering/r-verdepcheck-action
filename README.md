@@ -1,4 +1,4 @@
-# R Minimum Dependency Check Action
+# R Version Dependency Check Action
 
 ## Description
 
