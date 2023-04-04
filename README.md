@@ -56,6 +56,12 @@ Insights Engineering
 
   _Default_: `""`
 
+* `strategy`:
+
+  _Description_: Strategy for dependency test, should be one of: min, release, max.
+
+  _Required_: `true`
+
 * `additional-env-vars`:
 
   _Description_: Additional environment variables.
@@ -72,7 +78,7 @@ None
 ## Usage
 
 ```yaml
-name: Minimum dependency check
+name: Dependency Test
 
 on:
   push:
@@ -85,7 +91,7 @@ on:
 jobs:
   check:
     runs-on: ubuntu-latest
-    name: Minimum dependency check
+    name: Dependency Test
     container:
       image: rocker/tidyverse:4.1.2
 
@@ -95,10 +101,11 @@ jobs:
         with:
           path: repository
 
-      - name: Run dependency check
-        uses: insightsengineering/r-mindepscheck-action@v1
+      - name: Run Dependency Test
+        uses: insightsengineering/r-verdepcheck-action@v1
         with:
           github-token: ${{ secrets.REPO_GITHUB_TOKEN }}
+          strategy: release
 
       - name: Upload lock file
         if: always()
