@@ -1,5 +1,5 @@
 ---
-name: R minimum dependency check
+name: Dependency Test
 author: Insights Engineering
 description: Derieve minimum version of package dependencies, install and execute R CMD CHECK
 
