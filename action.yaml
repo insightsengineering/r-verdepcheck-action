@@ -20,6 +20,10 @@ inputs:
     description: Optional value of build_args argument to rcmdcheck::rcmdcheck in form of a string with space as delimeter, e.g. "--force --keep-empty-dirs".
     required: false
     default: ""
+  strategy:
+    description: |
+      Strategy to test package dependencies. One of: min, release, max.
+    required: true
   additional-env-vars:
     description: |
       Additional environment variables.
@@ -37,8 +41,9 @@ branding:
 runs:
   using: composite
   steps:
-    - name: Run minimum dependency check
+    - name: Run Dependency Test
       run: |
+        echo "Dependency Test strategy: ${{ inputs.strategy }}"
         if [ "${{ inputs.additional-env-vars }}" != "" ]
         then {
           echo -e "${{ inputs.additional-env-vars }}" > /tmp/dotenv.env
