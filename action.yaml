@@ -11,7 +11,7 @@ inputs:
   repository-path:
     description: Directory where the checked package has been cloned.
     required: false
-    default: repository
+    default: "."
   check-args:
     description: Optional value of args argument to rcmdcheck::rcmdcheck in form of a string with space as delimeter, e.g. "--no-examples --no-tests".
     required: false
