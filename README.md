@@ -2,8 +2,8 @@
 
 ## Description
 
-Resolve and install minimal dependencies for a given package. Execute R CMD CHECK with minimal dependencies installed.
-The aim is to check correctness of a `DESCRIPTION` file, i.e. minimal dependencies specification.
+Execute R CMD CHECK using various strategies of package dependencies versions.
+The aim is to check correctness of a `DESCRIPTION` file, i.e. minimal version of dependencies.
 This covers only _direct_ dependencies, i.e. it does not resolve dependencies of dependencies recursively.
 
 Example:
@@ -13,7 +13,7 @@ flowchart LR
     B-- imports -->C;
 ```
 
-When executed for A, script would read A's `DESCRIPTION` file, determine minimal version of B and install it using latest version of C (i.e. base package installation).
+When executed for A, script would read A's `DESCRIPTION` file, determine version of B and install it using latest version of C (i.e. base package installation).
 
 Please see [`verdepcheck`](https://github.com/insightsengineering/verdepcheck) package documentation for details.
 

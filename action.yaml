@@ -1,7 +1,7 @@
 ---
 name: Dependency Test
 author: Insights Engineering
-description: Derieve minimum version of package dependencies, install and execute R CMD CHECK
+description: Resolve package dependencies according to the strategy used, install them and execute R CMD CHECK
 
 inputs:
   github-token:
