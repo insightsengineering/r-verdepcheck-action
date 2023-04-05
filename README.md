@@ -1,9 +1,9 @@
-# R Minimum Dependency Check Action
+# R Version Dependency Check Action
 
 ## Description
 
-Resolve and install minimal dependencies for a given package. Execute R CMD CHECK with minimal dependencies installed.
-The aim is to check correctness of a `DESCRIPTION` file, i.e. minimal dependencies specification.
+Execute R CMD CHECK using various strategies of package dependencies versions.
+The aim is to check correctness of a `DESCRIPTION` file, i.e. minimal version of dependencies.
 This covers only _direct_ dependencies, i.e. it does not resolve dependencies of dependencies recursively.
 
 Example:
@@ -13,7 +13,7 @@ flowchart LR
     B-- imports -->C;
 ```
 
-When executed for A, script would read A's `DESCRIPTION` file, determine minimal version of B and install it using latest version of C (i.e. base package installation).
+When executed for A, script would read A's `DESCRIPTION` file, determine version of B and install it using latest version of C (i.e. base package installation).
 
 Please see [`verdepcheck`](https://github.com/insightsengineering/verdepcheck) package documentation for details.
 
@@ -56,6 +56,12 @@ Insights Engineering
 
   _Default_: `""`
 
+* `strategy`:
+
+  _Description_: Strategy for dependency test, should be one of: min, release, max.
+
+  _Required_: `true`
+
 * `additional-env-vars`:
 
   _Description_: Additional environment variables.
@@ -72,7 +78,7 @@ None
 ## Usage
 
 ```yaml
-name: Minimum dependency check
+name: Dependency Test
 
 on:
   push:
@@ -85,7 +91,7 @@ on:
 jobs:
   check:
     runs-on: ubuntu-latest
-    name: Minimum dependency check
+    name: Dependency Test
     container:
       image: rocker/tidyverse:4.1.2
 
@@ -95,10 +101,11 @@ jobs:
         with:
           path: repository
 
-      - name: Run dependency check
-        uses: insightsengineering/r-mindepscheck-action@v1
+      - name: Run Dependency Test
+        uses: insightsengineering/r-verdepcheck-action@v1
         with:
           github-token: ${{ secrets.REPO_GITHUB_TOKEN }}
+          strategy: release
 
       - name: Upload lock file
         if: always()

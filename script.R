@@ -8,9 +8,8 @@ remotes::install_github("r-lib/rcmdcheck#196") # TODO: remove when merged / link
 args <- commandArgs(trailingOnly = TRUE)
 path <- normalizePath(file.path(".", args[1]))
 build_args <- strsplit(args[2], " ")[[1]]
-if (is.na(build_args) || build_args == "") build_args <- character(0)
 check_args <- strsplit(args[3], " ")[[1]]
-if (is.na(check_args) || check_args == "") check_args <- character(0)
+strategy <- strsplit(args[4], " ")[[1]]
 
 cli::cli_h1("Cat script parameters")
 catnl("path:")
@@ -19,9 +18,18 @@ catnl("build_args:")
 catnl(build_args)
 catnl("check_args:")
 catnl(check_args)
+catnl("strategy:")
+catnl(strategy)
 
 cli::cli_h1("Execute verdepcheck...")
-x <- verdepcheck::min_deps_check(path, check_args = check_args, build_args = build_args)
+fun <- switch(
+    strategy,
+    "min" = verdepcheck::min_deps_check,
+    "release" = verdepcheck::release_deps_check,
+    "max" = verdepcheck::max_deps_check,
+    stop("Unknown strategy")
+)
+x <- fun(path, check_args = check_args, build_args = build_args)
 
 
 cli::cli_h1("Installation proposal:")

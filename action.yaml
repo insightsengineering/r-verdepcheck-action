@@ -1,7 +1,7 @@
 ---
-name: R minimum dependency check
+name: Dependency Test
 author: Insights Engineering
-description: Derieve minimum version of package dependencies, install and execute R CMD CHECK
+description: Resolve package dependencies according to the strategy used, install them and execute R CMD CHECK
 
 inputs:
   github-token:
@@ -11,7 +11,7 @@ inputs:
   repository-path:
     description: Directory where the checked package has been cloned.
     required: false
-    default: repository
+    default: "."
   check-args:
     description: Optional value of args argument to rcmdcheck::rcmdcheck in form of a string with space as delimeter, e.g. "--no-examples --no-tests".
     required: false
@@ -20,6 +20,10 @@ inputs:
     description: Optional value of build_args argument to rcmdcheck::rcmdcheck in form of a string with space as delimeter, e.g. "--force --keep-empty-dirs".
     required: false
     default: ""
+  strategy:
+    description: |
+      Strategy to test package dependencies. One of: min, release, max.
+    required: true
   additional-env-vars:
     description: |
       Additional environment variables.
@@ -37,15 +41,16 @@ branding:
 runs:
   using: composite
   steps:
-    - name: Run minimum dependency check
+    - name: Run Dependency Test
       run: |
+        echo "Dependency Test strategy: ${{ inputs.strategy }}"
         if [ "${{ inputs.additional-env-vars }}" != "" ]
         then {
           echo -e "${{ inputs.additional-env-vars }}" > /tmp/dotenv.env
           export $(tr '\n' ' ' < /tmp/dotenv.env)
         }
         fi
-        Rscript ${GITHUB_ACTION_PATH}/script.R ${{ inputs.repository-path }} ${{ inputs.build-args }} ${{ inputs.check-args }}
+        Rscript ${GITHUB_ACTION_PATH}/script.R '${{ inputs.repository-path }}' '${{ inputs.build-args }}' '${{ inputs.check-args }}' '${{ inputs.strategy }}'
       shell: bash
       env:
         GITHUB_PAT: "${{ inputs.github-token }}"
