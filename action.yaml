@@ -50,11 +50,5 @@ runs:
           export $(tr '\n' ' ' < /tmp/dotenv.env)
         }
         fi
-        Rscript ${GITHUB_ACTION_PATH}/script.R
+        Rscript ${GITHUB_ACTION_PATH}/script.R ${{ inputs.repository-path }} ${{ inputs.build-args }} ${{ inputs.check-args }} ${{ inputs.strategy }}
       shell: bash
-      env:
-        GITHUB_PAT: "${{ inputs.github-token }}"
-        VERDEPCHECK_REPOSITORY_PATH: ${{ inputs.repository-path }}
-        VERDEPCHECK_BUILD_ARGS: ${{ inputs.build-args }}
-        VERDEPCHECK_CHECK_ARGS: ${{ inputs.check-args }}
-        VERDEPCHECK_STRATEGY: ${{ inputs.strategy }}

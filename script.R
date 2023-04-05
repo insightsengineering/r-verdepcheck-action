@@ -6,10 +6,12 @@ remotes::install_github("insightsengineering/verdepcheck")
 remotes::install_github("r-lib/rcmdcheck#196") # TODO: remove when merged / linked issue fixed
 
 args <- commandArgs(trailingOnly = TRUE)
-path <- normalizePath(file.path(".", Sys.getenv("VERDEPCHECK_REPOSITORY_PATH")))
-build_args <- strsplit(Sys.getenv("VERDEPCHECK_BUILD_ARGS"), " ")[[1]]
-check_args <- strsplit(Sys.getenv("VERDEPCHECK_CHECK_ARGS"), " ")[[1]]
-strategy <- strsplit(Sys.getenv("VERDEPCHECK_STRATEGY"), " ")[[1]]
+path <- normalizePath(file.path(".", args[1]))
+build_args <- strsplit(args[2], " ")[[1]]
+if (is.na(build_args) || build_args == "") build_args <- character(0)
+check_args <- strsplit(args[3], " ")[[1]]
+if (is.na(check_args) || check_args == "") check_args <- character(0)
+strategy <- strsplit(args[4], " ")[[1]]
 
 cli::cli_h1("Cat script parameters")
 catnl("path:")
