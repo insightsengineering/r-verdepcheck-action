@@ -31,6 +31,7 @@ fun <- switch(
 )
 x <- fun(path, check_args = check_args, build_args = build_args)
 
+cli::cli_h1("Debug output:")
 
 cli::cli_h1("Installation proposal:")
 x$ip
@@ -48,11 +49,18 @@ cli::cli_h2("Dependency resolution (tree):")
 try(x$ip$draw())
 
 # TODO: https://github.com/r-lib/pkgdepends/issues/305 - remove when fixed
-cli::cli_h2("Supplementary solution (experimental - use only when the above results in empty report):")
-xx <- pkgdepends::new_pkg_deps(desc::desc(gsub("deps::", "", x$ip$get_refs()))$get_remotes(), config = list(library = tempfile()))
-xx$solve()
-xx$get_solution()
-
+# this provides additional debug info in case of empty error report
+if (inherits(x$ip, "pkg_installation_proposal") &&
+    inherits(x$ip$get_solution(), "pkg_solution_result") &&
+    x$ip$get_solution()$status == "FAILED" &&
+    inherits(x$ip$get_solution()$failures, "pkg_solution_failures") &&
+    grepl("*.dependency conflict$", format(x$ip$get_solution()$failures)[[1]])
+) {
+    cli::cli_h2("Supplementary solution (experimental):")
+    xx <- pkgdepends::new_pkg_deps(desc::desc(gsub("deps::", "", x$ip$get_refs()))$get_remotes(), config = list(library = tempfile()))
+    xx$solve()
+    xx$get_solution()
+}
 
 cli::cli_h1("Create lockfile...")
 try(x$ip$create_lockfile("pkg.lock"))
