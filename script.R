@@ -1,5 +1,6 @@
 print(as.list(Sys.getenv()))
 print(.libPaths())
+print(rownames(installed.packages()))
 
 catnl <- function(x = "") cat(sprintf("%s\n", x))
 
