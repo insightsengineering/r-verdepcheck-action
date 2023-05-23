@@ -1,3 +1,5 @@
+print(.libPaths())
+
 catnl <- function(x = "") cat(sprintf("%s\n", x))
 
 catnl("Install required packages")
