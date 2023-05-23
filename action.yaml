@@ -44,7 +44,7 @@ runs:
     - name: Run Dependency Test
       run: |
         echo "Dependency Test strategy: ${{ inputs.strategy }}"
-        if [ "${{ inputs.additional-env-vars }}" != "" ]
+        if [ '${{ inputs.additional-env-vars }}' != "" ]
         then {
           echo -e "${{ inputs.additional-env-vars }}" > /tmp/dotenv.env
           export $(tr '\n' ' ' < /tmp/dotenv.env)
