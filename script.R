@@ -1,4 +1,4 @@
-Sys.getenv()
+print(as.list(Sys.getenv()))
 print(.libPaths())
 
 catnl <- function(x = "") cat(sprintf("%s\n", x))
