@@ -49,6 +49,8 @@ runs:
           echo -e "${{ inputs.additional-env-vars }}" > /tmp/dotenv.env
           export $(tr '\n' ' ' < /tmp/dotenv.env)
         }
+        echo "R_LIBS_SITE = $R_LIBS_SITE"
+        echo "R_LIBS = $R_LIBS"
         fi
         Rscript ${GITHUB_ACTION_PATH}/script.R '${{ inputs.repository-path }}' '${{ inputs.build-args }}' '${{ inputs.check-args }}' '${{ inputs.strategy }}'
       shell: bash
