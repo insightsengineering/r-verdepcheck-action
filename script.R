@@ -39,8 +39,11 @@ x <- fun(path, check_args = check_args, build_args = build_args)
 
 cli::cli_h1("Debug output:")
 
-cli::cli_h1("Installation proposal:")
+cli::cli_h2("Installation proposal:")
 x$ip
+
+cli::cli_h2("Installation proposal config:")
+x$ip$get_config()
 
 cli::cli_h2("Package DESCRIPTION file used (see Remotes section):")
 catnl(readLines(gsub(".*::", "", x$ip$get_refs())))
