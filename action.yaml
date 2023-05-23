@@ -52,6 +52,7 @@ runs:
         echo "R_LIBS_SITE = $R_LIBS_SITE"
         echo "R_LIBS = $R_LIBS"
         fi
+        rm /usr/local/lib/R/etc/Renviron
         Rscript ${GITHUB_ACTION_PATH}/script.R '${{ inputs.repository-path }}' '${{ inputs.build-args }}' '${{ inputs.check-args }}' '${{ inputs.strategy }}'
       shell: bash
       env:
