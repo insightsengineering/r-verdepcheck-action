@@ -50,6 +50,9 @@ runs:
           export $(tr '\n' ' ' < /tmp/dotenv.env)
         }
         fi
+        echo ".libPaths(\" \", include.site = FALSE)" > .Rprofile
+        export R_LIBS_SITE=" "
+        export R_LIBS_USER=" "
         Rscript ${GITHUB_ACTION_PATH}/script.R '${{ inputs.repository-path }}' '${{ inputs.build-args }}' '${{ inputs.check-args }}' '${{ inputs.strategy }}'
       shell: bash
       env:
