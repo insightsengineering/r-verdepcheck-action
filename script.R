@@ -1,13 +1,9 @@
-print(as.list(Sys.getenv()))
-print(.libPaths())
-print(rownames(installed.packages()))
-
 catnl <- function(x = "") cat(sprintf("%s\n", x))
 
 catnl("Install required packages")
-install.packages(c("remotes", "cli"))
-remotes::install_github("insightsengineering/verdepcheck")
-remotes::install_github("r-lib/rcmdcheck#196") # TODO: remove when merged / linked issue fixed
+install.packages(c("remotes", "cli"), quiet = TRUE, verbose = FALSE)
+remotes::install_github("insightsengineering/verdepcheck", quiet = TRUE, verbose = FALSE)
+remotes::install_github("r-lib/rcmdcheck#196", quiet = TRUE, verbose = FALSE) # TODO: remove when merged / linked issue fixed
 
 args <- commandArgs(trailingOnly = TRUE)
 path <- normalizePath(file.path(".", args[1]))
@@ -50,7 +46,7 @@ cli::cli_h2("Dependency solution:")
 x$ip$get_solution()
 
 cli::cli_h2("Dependency resolution:")
-print(subset(x$ip$get_resolution(), , c(ref, package, version)), n = Inf)
+print(as.data.frame(subset(x$ip$get_resolution(), , c(ref, package, version))))
 
 cli::cli_h2("Dependency resolution (tree):")
 try(x$ip$draw())
