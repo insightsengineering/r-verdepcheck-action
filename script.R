@@ -3,7 +3,7 @@ catnl <- function(x = "") cat(sprintf("%s\n", x))
 catnl("Install required packages")
 install.packages(c("remotes", "cli"), quiet = TRUE, verbose = FALSE, repos = "http://cran.us.r-project.org")
 remotes::install_github("r-lib/rcmdcheck#196", quiet = TRUE, verbose = FALSE) # TODO: remove when merged / linked issue fixed
-remotes::install_github("./verdepcheck", quiet = TRUE, verbose = FALSE)
+remotes::install_github("insightsengineering/verdepcheck", quiet = TRUE, verbose = FALSE)
 
 args <- commandArgs(trailingOnly = TRUE)
 path <- normalizePath(file.path(".", args[1]))
