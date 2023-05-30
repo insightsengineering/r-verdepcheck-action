@@ -2,8 +2,8 @@ catnl <- function(x = "") cat(sprintf("%s\n", x))
 
 catnl("Install required packages")
 install.packages(c("remotes", "cli"), quiet = TRUE, verbose = FALSE, repos = "http://cran.us.r-project.org")
-remotes::install_github("r-lib/rcmdcheck#196", quiet = TRUE, verbose = FALSE) # TODO: remove when merged / linked issue fixed
 remotes::install_github("insightsengineering/verdepcheck", quiet = TRUE, verbose = FALSE)
+remotes::install_github("r-lib/rcmdcheck#196", quiet = TRUE, verbose = FALSE) # TODO: remove when merged / linked issue fixed
 
 args <- commandArgs(trailingOnly = TRUE)
 path <- normalizePath(file.path(".", args[1]))
@@ -96,6 +96,8 @@ cli::cli_h2("R CMD CHECK test output:")
 lapply(x$check$test_output, cat)
 
 catnl()
+
+saveRDS(x, "./x.rds")
 
 stopifnot("pkg dependency resolve failed - please see the above logs for details" = x$ip$get_solution()$status == "OK")
 stopifnot("R CMD BUILD resulted in error - please see the above logs for details" = !is.null(x$check))
