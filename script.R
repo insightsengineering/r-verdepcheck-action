@@ -97,8 +97,6 @@ lapply(x$check$test_output, cat)
 
 catnl()
 
-saveRDS(x, "./x.rds")
-
 stopifnot("pkg dependency resolve failed - please see the above logs for details" = x$ip$get_solution()$status == "OK")
 stopifnot("R CMD BUILD resulted in error - please see the above logs for details" = !is.null(x$check))
 stopifnot("R CMD CHECK resulted in error - please see the above logs for details" = x$check$status == 0)
