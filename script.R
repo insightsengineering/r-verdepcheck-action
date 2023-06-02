@@ -30,6 +30,7 @@ fun <- switch(
     stop("Unknown strategy")
 )
 x <- fun(path, check_args = check_args, build_args = build_args)
+saveRDS(x, "res.RDS")
 
 cli::cli_h1("Debug output:")
 
@@ -66,7 +67,7 @@ if (inherits(x$ip, "pkg_installation_proposal") &&
 ) {
     cli::cli_h2("Supplementary solution (experimental):")
     xx <- pkgdepends::new_pkg_deps(desc::desc(gsub("deps::", "", x$ip$get_refs()))$get_remotes(), config = list(library = tempfile()))
-    xx$solve()
+    verdepcheck:::solve_ignore_remotes_release(xx)
     xx$get_solution()
 }
 
