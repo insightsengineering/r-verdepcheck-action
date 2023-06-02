@@ -67,7 +67,7 @@ if (inherits(x$ip, "pkg_installation_proposal") &&
 ) {
     cli::cli_h2("Supplementary solution (experimental):")
     xx <- pkgdepends::new_pkg_deps(desc::desc(gsub("deps::", "", x$ip$get_refs()))$get_remotes(), config = list(library = tempfile()))
-    verdepcheck:::solve_ignore_remotes_release.min_deps_installation_proposal(xx)
+    verdepcheck:::solve_ignore_remotes_release.deps_installation_proposal(xx)
     xx$get_solution()
 }
 
