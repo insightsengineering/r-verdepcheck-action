@@ -66,7 +66,14 @@ if (inherits(x$ip, "pkg_installation_proposal") &&
     grepl("*.dependency conflict$", format(x$ip$get_solution()$failures)[[1]])
 ) {
     cli::cli_h2("Supplementary solution (experimental):")
-    xx <- pkgdepends::new_pkg_deps(desc::desc(gsub("deps::", "", x$ip$get_refs()))$get_remotes(), config = list(library = tempfile()))
+    xx <- pkgdepends::new_pkg_deps(
+        trimws(strsplit(
+            desc::desc(
+                gsub("deps::", "", x$ip$get_refs())
+            )$get_field("Config/Needs/verdepcheck")
+        , ",")[[1]]),
+        config = list(library = tempfile())
+    )
     verdepcheck:::solve_ip(xx)
     xx$get_solution()
 }
