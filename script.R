@@ -1,6 +1,15 @@
+# Print with a string with new line
 catnl <- function(x = "") cat(sprintf("%s\n", x))
+# Print a string from a variable (showing variable name before)
+catnl_param <- function(x = "") {
+  var_name <- tryCatch(rlang::as_name(rlang::enexpr(x)), error = function(err) NULL)
+  if (is.null(var_name)) return(catnl(x))
+  var_string <- sprintf("%s:", var_name)
+  if (length(x) == 0) cat(var_string, "(empty)\n") else cat(var_string, x, "\n")
+}
 
 catnl("Install required packages")
+
 install.packages(c("remotes", "cli"), quiet = TRUE, verbose = FALSE, repos = "http://cran.us.r-project.org")
 remotes::install_github("insightsengineering/verdepcheck", quiet = TRUE, verbose = FALSE)
 remotes::install_github("r-lib/rcmdcheck#196", quiet = TRUE, verbose = FALSE) # TODO: remove when merged / linked issue fixed
@@ -12,19 +21,16 @@ check_args <- strsplit(args[3], " ")[[1]]
 strategy <- strsplit(args[4], " ")[[1]]
 
 cli::cli_h1("Cat script parameters")
-catnl("path:")
-catnl(path)
-catnl("build_args:")
-catnl(build_args)
-catnl("check_args:")
-catnl(check_args)
-catnl("strategy:")
-catnl(strategy)
+catnl_param(path)
+catnl_param(build_args)
+catnl_param(check_args)
+catnl_param(strategy)
 
 cli::cli_h1("Execute verdepcheck...")
 fun <- switch(
     strategy,
-    "min" = verdepcheck::min_deps_check,
+    "min_cohort" = verdepcheck::min_cohort_deps_check,
+    "min_isolated" = verdepcheck::min_isolated_deps_check,
     "release" = verdepcheck::release_deps_check,
     "max" = verdepcheck::max_deps_check,
     stop("Unknown strategy")
