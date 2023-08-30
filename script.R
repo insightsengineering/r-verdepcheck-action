@@ -5,7 +5,7 @@ catnl_param <- function(x = "") {
   var_name <- tryCatch(rlang::as_name(rlang::enexpr(x)), error = function(err) NULL)
   if (is.null(var_name)) return(catnl(x))
   var_string <- sprintf("%s:", var_name)
-  if(length(x) == 0) cat(var_string, "(empty)\n") else cat(var_string, x, "\n")
+  if (length(x) == 0) cat(var_string, "(empty)\n") else cat(var_string, x, "\n")
 }
 
 catnl("Install required packages")
