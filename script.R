@@ -14,7 +14,6 @@ install.packages(c("remotes", "cli"), quiet = TRUE, verbose = FALSE, repos = "ht
 remotes::install_github("insightsengineering/verdepcheck", quiet = TRUE, verbose = FALSE)
 remotes::install_github("r-lib/rcmdcheck#196", quiet = TRUE, verbose = FALSE) # TODO: remove when merged / linked issue fixed
 
-
 args <- commandArgs(trailingOnly = TRUE)
 path <- normalizePath(file.path(".", args[1]))
 build_args <- strsplit(args[2], " ")[[1]]
