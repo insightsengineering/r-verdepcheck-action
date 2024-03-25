@@ -57,3 +57,4 @@ runs:
       shell: bash
       env:
         GITHUB_PAT: "${{ inputs.github-token }}"
+        _R_CHECK_TESTS_NLINES_: 0
