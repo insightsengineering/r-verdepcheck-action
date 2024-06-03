@@ -53,7 +53,7 @@ cli::cli_h2("Dependency solution:")
 x$ip$get_solution()
 
 cli::cli_h2("Dependency resolution:")
-x_res <- subset(x$ip$get_resolution(), , c(ref, package, version, mirror))
+x_res <- subset(x$ip$get_resolution(), , c(ref, package, version, mirror, sources))
 if ("tibble" %in% rownames(installed.packages())) {
     print(x_res, n = Inf)
 } else {
