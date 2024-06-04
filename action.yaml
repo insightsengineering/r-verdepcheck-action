@@ -70,14 +70,14 @@ runs:
         cli::cli_h2("Package DESCRIPTION file used (see Remotes section):")
         cat(readLines(gsub(".*::", "", x$ip$get_refs())))
         cat("\n")
-      shell: Rscript
+      shell: Rscript {0}
     - name: "DEBUG: Dependency solution"
       run: |
         x <- readRDS("res.RDS")
 
         cli::cli_h2("Dependency solution:")
         x$ip$get_solution()
-      shell: Rscript
+      shell: Rscript {0}
     - name: "DEBUG: Dependency resolution"
       run: |
         x <- readRDS("res.RDS")
@@ -90,7 +90,7 @@ runs:
             print(as.data.frame(x_res))
         }
 
-      shell: Rscript
+      shell: Rscript {0}
     - name: "DEBUG: Dependency resolution"
       run: |
         x <- readRDS("res.RDS")
@@ -122,7 +122,7 @@ runs:
         cli::cli_h1("Create lockfile...")
         try(x$ip$create_lockfile("pkg.lock"))
 
-      shell: Rscript
+      shell: Rscript {0}
     - name: "DEBUG: R CMD check"
       run: |
         x <- readRDS("res.RDS")
@@ -147,5 +147,5 @@ runs:
 
         cli::cli_h2("R CMD CHECK test output:")
         lapply(x$check$test_output, cat)
-      shell: Rscript
+      shell: Rscript {0}
 
