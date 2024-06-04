@@ -11,7 +11,7 @@ catnl_param <- function(x = "") {
 catnl("Install required packages")
 
 install.packages(c("remotes", "cli"), quiet = TRUE, verbose = FALSE)
-remotes::install_github("insightsengineering/verdepcheck", ref = "fix-random-download@main", quiet = TRUE, verbose = FALSE)
+remotes::install_github("insightsengineering/verdepcheck", quiet = TRUE, verbose = FALSE)
 remotes::install_github("r-lib/rcmdcheck#196", quiet = TRUE, verbose = FALSE) # TODO: remove when merged / linked issue fixed
 
 args <- commandArgs(trailingOnly = TRUE)
