@@ -10,7 +10,7 @@ catnl_param <- function(x = "") {
 
 catnl("Install required packages")
 
-install.packages(c("remotes", "cli", "pkgcache", "pkgdepends"), quiet = TRUE, verbose = FALSE, repos = "https://cloud.r-project.org")
+install.packages(c("remotes", "cli"), quiet = TRUE, verbose = FALSE)
 remotes::install_github("insightsengineering/verdepcheck", ref = "fix-random-download@main", quiet = TRUE, verbose = FALSE)
 remotes::install_github("r-lib/rcmdcheck#196", quiet = TRUE, verbose = FALSE) # TODO: remove when merged / linked issue fixed
 
@@ -53,7 +53,7 @@ cli::cli_h2("Dependency solution:")
 x$ip$get_solution()
 
 cli::cli_h2("Dependency resolution:")
-x_res <- subset(x$ip$get_resolution(), , c(ref, package, version, mirror, sources))
+x_res <- subset(x$ip$get_resolution(), , c(ref, package, version))
 if ("tibble" %in% rownames(installed.packages())) {
     print(x_res, n = Inf)
 } else {
