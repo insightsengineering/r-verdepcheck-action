@@ -16,10 +16,10 @@ remotes::install_github("r-lib/rcmdcheck#196", quiet = TRUE, verbose = FALSE) # 
 
 args <- trimws(commandArgs(trailingOnly = TRUE))
 path <- normalizePath(file.path(".", args[1]))
-extra_deps <- strsplit(args[2], " ")[[1]]
+extra_deps <- args[2]
 build_args <- strsplit(args[3], " ")[[1]]
 check_args <- strsplit(args[4], " ")[[1]]
-strategy <- strsplit(args[5], " ")[[1]]
+strategy <- args[5]
 
 cli::cli_h1("Cat script parameters")
 catnl_param(path)
