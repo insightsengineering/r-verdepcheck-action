@@ -42,7 +42,7 @@ Insights Engineering
 
 * `extra-deps`:
 
-  _Description_: Extra dependencies specified similarly to the `DESCRIPTION` file, i.e. `"<package name> (<operator> <version>)"` where both `<operator>` and `<version>` are optional. Multiple entries are possible separated by `";"`.
+  _Description_: Extra dependencies specified similarly as in the `DESCRIPTION` file, i.e. `"<package name> (<operator> <version>)"` where both `<operator>` and `<version>` are optional. Multiple entries are possible separated by `";"`.
 
   _Required_: `false`
 
