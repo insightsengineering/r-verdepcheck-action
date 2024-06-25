@@ -12,6 +12,10 @@ inputs:
     description: Directory where the checked package has been cloned.
     required: false
     default: "."
+  extra-deps:
+    description: Extra dependencies specified similarly as in the `DESCRIPTION` file, i.e. `"<package name> (<operator> <version>)"` where both `<operator>` and `<version>` are optional. Multiple entries are possible separated by `";"`.
+    required: false
+    default: ""
   check-args:
     description: Optional value of args argument to rcmdcheck::rcmdcheck in form of a string with space as delimeter, e.g. "--no-examples --no-tests".
     required: false
@@ -22,7 +26,7 @@ inputs:
     default: ""
   strategy:
     description: |
-      Strategy to test package dependencies. One of: min, release, max.
+      Strategy to test package dependencies. One of: min_isolated, min_cohort, release, max.
     required: true
   additional-env-vars:
     description: |
@@ -53,7 +57,7 @@ runs:
         echo ".libPaths(\" \", include.site = FALSE)" > .Rprofile
         export R_LIBS_SITE=" "
         export R_LIBS_USER=" "
-        Rscript ${GITHUB_ACTION_PATH}/script.R '${{ inputs.repository-path }}' '${{ inputs.build-args }}' '${{ inputs.check-args }}' '${{ inputs.strategy }}'
+        Rscript ${GITHUB_ACTION_PATH}/script.R '${{ inputs.repository-path }}' '${{ inputs.extra-deps }}' '${{ inputs.build-args }}' '${{ inputs.check-args }}' '${{ inputs.strategy }}'
       shell: bash
       env:
         GITHUB_PAT: "${{ inputs.github-token }}"

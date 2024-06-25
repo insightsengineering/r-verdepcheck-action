@@ -14,17 +14,18 @@ install.packages(c("remotes", "cli"), quiet = TRUE, verbose = FALSE)
 remotes::install_github("insightsengineering/verdepcheck", quiet = TRUE, verbose = FALSE)
 remotes::install_github("r-lib/rcmdcheck#196", quiet = TRUE, verbose = FALSE) # TODO: remove when merged / linked issue fixed
 
-args <- commandArgs(trailingOnly = TRUE)
+args <- trimws(commandArgs(trailingOnly = TRUE))
 path <- normalizePath(file.path(".", args[1]))
-build_args <- strsplit(args[2], " ")[[1]]
-check_args <- strsplit(args[3], " ")[[1]]
-strategy <- strsplit(args[4], " ")[[1]]
+extra_deps <- args[2]
+build_args <- strsplit(args[3], " ")[[1]]
+check_args <- strsplit(args[4], " ")[[1]]
+strategy <- args[5]
 
 cli::cli_h1("Cat script parameters")
 catnl_param(path)
+catnl_param(extra_deps)
 catnl_param(build_args)
 catnl_param(check_args)
-catnl_param(strategy)
 
 cli::cli_h1("Execute verdepcheck...")
 fun <- switch(
@@ -35,7 +36,7 @@ fun <- switch(
     "max" = verdepcheck::max_deps_check,
     stop("Unknown strategy")
 )
-x <- fun(path, check_args = check_args, build_args = build_args)
+x <- fun(path, extra_deps = extra_deps, check_args = check_args, build_args = build_args)
 saveRDS(x, "res.RDS")
 
 cli::cli_h1("Debug output:")
