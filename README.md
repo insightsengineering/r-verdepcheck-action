@@ -110,7 +110,7 @@ jobs:
           path: repository
 
       - name: Run Dependency Test
-        uses: insightsengineering/r-verdepcheck-action@v0
+        uses: insightsengineering/r-verdepcheck-action@latest
         with:
           github-token: ${{ secrets.REPO_GITHUB_TOKEN }}
           strategy: release
