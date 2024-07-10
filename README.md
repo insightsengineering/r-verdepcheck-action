@@ -101,16 +101,16 @@ jobs:
     runs-on: ubuntu-latest
     name: Dependency Test
     container:
-      image: rocker/tidyverse:4.1.2
+      image: rocker/tidyverse:4.4.1
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           path: repository
 
       - name: Run Dependency Test
-        uses: insightsengineering/r-verdepcheck-action@v1
+        uses: insightsengineering/r-verdepcheck-action@latest
         with:
           github-token: ${{ secrets.REPO_GITHUB_TOKEN }}
           strategy: release
