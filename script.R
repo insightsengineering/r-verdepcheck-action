@@ -20,7 +20,7 @@ extra_deps <- args[2]
 build_args <- strsplit(args[3], " ")[[1]]
 check_args <- strsplit(args[4], " ")[[1]]
 strategy <- args[5]
-additional_repositories <- strsplit(args[6], ",")[[1]]
+additional_repositories <- strsplit(args[6], ";")[[1]]
 
 cli::cli_h1("Cat script parameters")
 catnl_param(path)

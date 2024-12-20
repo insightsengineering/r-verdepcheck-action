@@ -18,70 +18,29 @@ When executed for A, script would read A's `DESCRIPTION` file, determine version
 Please see [`verdepcheck`](https://github.com/insightsengineering/verdepcheck) package documentation for details.
 
 ## Action type
+
 Composite
 
 ## Author
-Insights Engineering
+
+[Insights Engineering](https://github.com/insightsengineering/)
 
 ## Inputs
-* `github-token`:
 
-  _Description_: Token with permissions to clone repositories with dependencies.
-
-  _Required_: `false`
-
-  _Default_: `""`
-
-* `repository-path`:
-
-  _Description_: Directory where the checked package has been cloned.
-
-  _Required_: `false`
-
-  _Default_: `repository`
-
-* `extra-deps`:
-
-  _Description_: Extra dependencies specified similarly as in the `DESCRIPTION` file, i.e. `"<package name> (<operator> <version>)"` where both `<operator>` and `<version>` are optional. Multiple entries are possible separated by `";"`.
-
-  _Required_: `false`
-
-  _Default_: `""`
-
-* `check-args`:
-
-  _Description_: Optional value of `args` argument to `rcmdcheck::rcmdcheck` in form of a string with space as delimeter, e.g. `"--no-examples --no-tests"`.
-
-  _Required_: `false`
-
-  _Default_: `""`
-
-* `build-args`:
-
-  _Description_: Optional value of `build_args` argument to `rcmdcheck::rcmdcheck` in form of a string with space as delimeter, e.g. `"--force --keep-empty-dirs"`.
-
-  _Required_: `false`
-
-  _Default_: `""`
-
-* `strategy`:
-
-  _Description_: Strategy for dependency test, should be one of: min, release, max.
-
-  _Required_: `true`
-
-* `additional-env-vars`:
-
-  _Description_: Additional environment variables.
-
-  _Required_: `false`
-
-  _Default_: `""`
-
+| Input          | Description                                                     | Required | Default |
+| -------------- | --------------------------------------------------------------- | ------- | ---- | 
+| `github-token` | Token with permissions to clone repositories with dependencies. | _no_ | `""` |
+| `repository-path` | Directory where the checked package has been cloned. | _no_ | `"repository"` |
+| `extra-deps` | Extra dependencies specified similarly as in the `DESCRIPTION` file, i.e. `"<package name> (<operator> <version>)"` where both `<operator>` and `<version>` are optional. Multiple entries are possible separated by `";"`. | _no_ | `""` |
+| `check-args` | Optional value of `args` argument to `rcmdcheck::rcmdcheck` in form of a string with space as delimeter, e.g. `"--no-examples --no-tests"`. | `false` | `""` |
+| `build-args` | Optional value of `build_args` argument to `rcmdcheck::rcmdcheck` in form of a string with space as delimeter, e.g. `"--force --keep-empty-dirs"`. | `false` | `""` |
+| `strategy` | Strategy for dependency test, should be one of: min, release, max. | _yes_ |  |
+| `additional-env-vars` | Additional environment variables. | _no_ | `""` |
+| `additional-repos` | Optional value that add R repositories for a given strategy. Multiple entries are possible separated by `";"`. | _no_ | `""` |
 
 ## Outputs
 
-None
+_None_
 
 ## Usage
 

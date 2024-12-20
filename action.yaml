@@ -24,13 +24,6 @@ inputs:
     description: Optional value of build_args argument to rcmdcheck::rcmdcheck in form of a string with space as delimeter, e.g. "--force --keep-empty-dirs".
     required: false
     default: ""
-  additional-repos:
-    description: |
-      Optional value that add R repositories for a given strategy (multiple repos per strategy can be defined by separating with a comma).
-      Example usage:
-        additional-repos: https://repo1.example.com,https://repo2.example.com
-    required: false
-    default: ""
   strategy:
     description: |
       Strategy to test package dependencies. One of: min_isolated, min_cohort, release, max.
@@ -42,6 +35,13 @@ inputs:
         additional-env-vars: |
           ABC=123
           XYZ=456
+    required: false
+    default: ""
+  additional-repos:
+    description: |
+      Optional value that add R repositories for a given strategy (multiple repos per strategy can be defined by separating with a comma).
+      Example usage:
+        additional-repos: https://repo1.example.com,https://repo2.example.com
     required: false
     default: ""
 
