@@ -27,7 +27,6 @@ catnl_param(path)
 catnl_param(extra_deps)
 catnl_param(build_args)
 catnl_param(check_args)
-catnl_param(strategy)
 catnl_param(additional_repositories)
 
 rlang::local_options(repos = c(options("repos"), additional_repositories))
