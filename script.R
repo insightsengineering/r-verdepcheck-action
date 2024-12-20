@@ -8,9 +8,9 @@ catnl_param <- function(x = "") {
   if (length(x) == 0) cat(var_string, "(empty)\n") else cat(var_string, x, "\n")
 }
 
-catnl("Install required packages")
+catnl("-- \033[1mInstall required packages\033[22m ------")
 
-install.packages(c("remotes", "cli"), quiet = TRUE, verbose = FALSE)
+install.packages(c("remotes", "cli", "rlang"), quiet = TRUE, verbose = FALSE)
 remotes::install_github("insightsengineering/verdepcheck", quiet = TRUE, verbose = FALSE)
 remotes::install_github("r-lib/rcmdcheck#196", quiet = TRUE, verbose = FALSE) # TODO: remove when merged / linked issue fixed
 
@@ -20,12 +20,17 @@ extra_deps <- args[2]
 build_args <- strsplit(args[3], " ")[[1]]
 check_args <- strsplit(args[4], " ")[[1]]
 strategy <- args[5]
+additional_repositories <- strsplit(args[6], ",")[[1]]
 
 cli::cli_h1("Cat script parameters")
 catnl_param(path)
 catnl_param(extra_deps)
 catnl_param(build_args)
 catnl_param(check_args)
+catnl_param(strategy)
+catnl_param(additional_repositories)
+
+rlang::local_options(repos = c(options("repos"), additional_repositories))
 
 cli::cli_h1("Execute verdepcheck...")
 fun <- switch(
