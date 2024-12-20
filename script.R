@@ -8,7 +8,7 @@ catnl_param <- function(x = "") {
   if (length(x) == 0) cat(var_string, "(empty)\n") else cat(var_string, x, "\n")
 }
 
-catnl("-- \033[1mInstall required packages\033[22m ------")
+catnl("\n── \033[1mInstall required packages\033[22m ────────────")
 
 install.packages(c("remotes", "cli", "rlang"), quiet = TRUE, verbose = FALSE)
 remotes::install_github("insightsengineering/verdepcheck", quiet = TRUE, verbose = FALSE)
