@@ -29,7 +29,7 @@ Composite
 
 * `github-token`:
 
-  _Description_: Token to clone dependencies from GitHub repositories.
+  _Description_: Token with permissions to clone repositories with dependencies.
 
   _Required_: `false`
 
