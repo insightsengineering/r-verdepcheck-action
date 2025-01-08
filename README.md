@@ -53,7 +53,7 @@ Composite
 
 * `check-args`:
 
-  _Description_: Optional value of args argument to rcmdcheck::rcmdcheck in form of a string with space as delimeter, e.g. "--no-examples --no-tests".
+  _Description_: Optional value of args argument to `rcmdcheck::rcmdcheck` in form of a string with space as delimeter, e.g. "--no-examples --no-tests".
 
   _Required_: `false`
 
@@ -61,7 +61,7 @@ Composite
 
 * `build-args`:
 
-  _Description_: Optional value of build_args argument to rcmdcheck::rcmdcheck in form of a string with space as delimeter, e.g. "--force --keep-empty-dirs".
+  _Description_: Optional value of `build_args` argument to `rcmdcheck::rcmdcheck` in form of a string with space as delimeter, e.g. `"--force --keep-empty-dirs"`.
 
   _Required_: `false`
 
@@ -69,7 +69,7 @@ Composite
 
 * `strategy`:
 
-  _Description_: Strategy to test package dependencies. One of: min_isolated, min_cohort, release, max.
+  _Description_: Strategy to test package dependencies. One of: `min_isolated`, `min_cohort`, `release`, `max`.
 
 
   _Required_: `true`
@@ -77,11 +77,6 @@ Composite
 * `additional-env-vars`:
 
   _Description_: Additional environment variables.
-Example usage:
-  additional-env-vars: |
-    ABC=123
-    XYZ=456
-
 
   _Required_: `false`
 
@@ -90,9 +85,6 @@ Example usage:
 * `additional-repos`:
 
   _Description_: Optional value that add R repositories for a given strategy. Multiple entries are possible separated by `";"`.
-
-Example usage: `additional-repos: https://repo1.example.com;https://repo2.example.com`
-
 
   _Required_: `false`
 
