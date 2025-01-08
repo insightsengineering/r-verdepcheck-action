@@ -53,7 +53,7 @@ Composite
 
 * `check-args`:
 
-  _Description_: Optional value of args argument to `rcmdcheck::rcmdcheck` in form of a string with space as delimeter, e.g. "--no-examples --no-tests".
+  _Description_: Optional value of `args` argument to `rcmdcheck::rcmdcheck` in form of a string with space as delimeter, e.g. `"--no-examples --no-tests"`.
 
   _Required_: `false`
 
