@@ -5,7 +5,7 @@ description: Resolve package dependencies according to the strategy used, instal
 
 inputs:
   github-token:
-    description: Token to clone dependencies from GitHub repositories.
+    description: Token with permissions to clone repositories with dependencies.
     required: false
     default: ""
   repository-path:
@@ -37,6 +37,13 @@ inputs:
           XYZ=456
     required: false
     default: ""
+  additional-repos:
+    description: |
+      Optional value that add R repositories for a given strategy. Multiple entries are possible separated by `";"`.
+
+      Example usage: `additional-repos: https://repo1.example.com;https://repo2.example.com`
+    required: false
+    default: ""
 
 branding:
   icon: 'refresh-ccw'
@@ -57,7 +64,7 @@ runs:
         echo ".libPaths(\" \", include.site = FALSE)" > .Rprofile
         export R_LIBS_SITE=" "
         export R_LIBS_USER=" "
-        Rscript ${GITHUB_ACTION_PATH}/script.R '${{ inputs.repository-path }}' '${{ inputs.extra-deps }}' '${{ inputs.build-args }}' '${{ inputs.check-args }}' '${{ inputs.strategy }}'
+        Rscript ${GITHUB_ACTION_PATH}/script.R '${{ inputs.repository-path }}' '${{ inputs.extra-deps }}' '${{ inputs.build-args }}' '${{ inputs.check-args }}' '${{ inputs.strategy }}' '${{ inputs.additional-repos }}'
       shell: bash
       env:
         GITHUB_PAT: "${{ inputs.github-token }}"

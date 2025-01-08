@@ -8,11 +8,11 @@ catnl_param <- function(x = "") {
   if (length(x) == 0) cat(var_string, "(empty)\n") else cat(var_string, x, "\n")
 }
 
-catnl("Install required packages")
+catnl("\n── \033[1mInstall required packages\033[22m ────────────")
 
-install.packages(c("remotes", "cli"), quiet = TRUE, verbose = FALSE)
+install.packages(c("remotes", "cli", "rlang"), quiet = TRUE, verbose = FALSE)
 remotes::install_github("insightsengineering/verdepcheck", quiet = TRUE, verbose = FALSE)
-remotes::install_github("r-lib/rcmdcheck#196", quiet = TRUE, verbose = FALSE) # TODO: remove when merged / linked issue fixed
+remotes::install_github("r-lib/rcmdcheck#196", quiet = TRUE, verbose = FALSE) # TODO: remove when merged / linked issue fixed # nolint: line_length.
 
 args <- trimws(commandArgs(trailingOnly = TRUE))
 path <- normalizePath(file.path(".", args[1]))
@@ -20,12 +20,16 @@ extra_deps <- args[2]
 build_args <- strsplit(args[3], " ")[[1]]
 check_args <- strsplit(args[4], " ")[[1]]
 strategy <- args[5]
+additional_repositories <- strsplit(args[6], ";")[[1]]
 
 cli::cli_h1("Cat script parameters")
 catnl_param(path)
 catnl_param(extra_deps)
 catnl_param(build_args)
 catnl_param(check_args)
+catnl_param(additional_repositories)
+
+rlang::local_options(repos = c(options("repos"), additional_repositories))
 
 cli::cli_h1("Execute verdepcheck...")
 fun <- switch(
@@ -66,7 +70,7 @@ try(x$ip$draw())
 
 # TODO: https://github.com/r-lib/pkgdepends/issues/305 - remove when fixed
 # this provides additional debug info in case of empty error report
-if (inherits(x$ip, "pkg_installation_proposal") &&
+if (inherits(x$ip, "pkg_installation_proposal") && # nolint: cyclocomp.
     inherits(x$ip$get_solution(), "pkg_solution_result") &&
     x$ip$get_solution()$status == "FAILED" &&
     inherits(x$ip$get_solution()$failures, "pkg_solution_failures") &&

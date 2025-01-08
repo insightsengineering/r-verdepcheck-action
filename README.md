@@ -18,12 +18,15 @@ When executed for A, script would read A's `DESCRIPTION` file, determine version
 Please see [`verdepcheck`](https://github.com/insightsengineering/verdepcheck) package documentation for details.
 
 ## Action type
+
 Composite
 
 ## Author
-Insights Engineering
+
+[Insights Engineering](https://github.com/insightsengineering/)
 
 ## Inputs
+
 * `github-token`:
 
   _Description_: Token with permissions to clone repositories with dependencies.
@@ -38,7 +41,7 @@ Insights Engineering
 
   _Required_: `false`
 
-  _Default_: `repository`
+  _Default_: `.`
 
 * `extra-deps`:
 
@@ -66,7 +69,8 @@ Insights Engineering
 
 * `strategy`:
 
-  _Description_: Strategy for dependency test, should be one of: min, release, max.
+  _Description_: Strategy to test package dependencies. One of: `min_isolated`, `min_cohort`, `release`, `max`.
+
 
   _Required_: `true`
 
@@ -78,10 +82,18 @@ Insights Engineering
 
   _Default_: `""`
 
+* `additional-repos`:
+
+  _Description_: Optional value that add R repositories for a given strategy. Multiple entries are possible separated by `";"`.
+
+  _Required_: `false`
+
+  _Default_: `""`
+
 
 ## Outputs
 
-None
+_None_
 
 ## Usage
 
