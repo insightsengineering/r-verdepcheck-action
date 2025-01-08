@@ -12,7 +12,7 @@ catnl("\n── \033[1mInstall required packages\033[22m ───────�
 
 install.packages(c("remotes", "cli", "rlang"), quiet = TRUE, verbose = FALSE)
 remotes::install_github("insightsengineering/verdepcheck", quiet = TRUE, verbose = FALSE)
-remotes::install_github("r-lib/rcmdcheck#196", quiet = TRUE, verbose = FALSE) # TODO: remove when merged / linked issue fixed
+remotes::install_github("r-lib/rcmdcheck#196", quiet = TRUE, verbose = FALSE) # TODO: remove when merged / linked issue fixed # nolint: line_length.
 
 args <- trimws(commandArgs(trailingOnly = TRUE))
 path <- normalizePath(file.path(".", args[1]))
@@ -70,7 +70,7 @@ try(x$ip$draw())
 
 # TODO: https://github.com/r-lib/pkgdepends/issues/305 - remove when fixed
 # this provides additional debug info in case of empty error report
-if (inherits(x$ip, "pkg_installation_proposal") &&
+if (inherits(x$ip, "pkg_installation_proposal") && # nolint: cyclocomp.
     inherits(x$ip$get_solution(), "pkg_solution_result") &&
     x$ip$get_solution()$status == "FAILED" &&
     inherits(x$ip$get_solution()$failures, "pkg_solution_failures") &&
