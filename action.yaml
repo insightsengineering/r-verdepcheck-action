@@ -1,10 +1,7 @@
 ---
 name: Dependency Test
 author: Insights Engineering
-description: |
-  Execute R CMD CHECK using various strategies of package dependencies versions.
-  The aim is to check correctness of a `DESCRIPTION` file, i.e. minimal version of dependencies.
-  This covers only _direct_ dependencies, i.e. it does not resolve dependencies of dependencies recursively.
+description: Resolve package dependencies according to the strategy used, install them and execute R CMD CHECK
 
 inputs:
   github-token:
