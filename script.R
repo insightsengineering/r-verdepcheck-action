@@ -29,7 +29,7 @@ catnl_param(build_args)
 catnl_param(check_args)
 catnl_param(additional_repositories)
 
-rlang::local_options(repos = c(options("repos"), additional_repositories))
+rlang::local_options(repos = c(getOption("repos"), additional_repositories))
 
 cli::cli_h1("Execute verdepcheck...")
 fun <- switch(
