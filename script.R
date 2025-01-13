@@ -13,6 +13,7 @@ catnl("\n── \033[1mInstall required packages\033[22m ───────�
 install.packages(c("remotes", "cli", "rlang"), quiet = TRUE, verbose = FALSE)
 remotes::install_github("insightsengineering/verdepcheck", quiet = TRUE, verbose = FALSE)
 remotes::install_github("r-lib/rcmdcheck#196", quiet = TRUE, verbose = FALSE) # TODO: remove when merged / linked issue fixed # nolint: line_length.
+library(withr)
 
 args <- trimws(commandArgs(trailingOnly = TRUE))
 path <- normalizePath(file.path(".", args[1]))
