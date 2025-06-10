@@ -10,9 +10,10 @@ catnl_param <- function(x = "") {
 
 catnl("\n── \033[1mInstall required packages\033[22m ────────────")
 
-install.packages(c("remotes", "cli", "rlang"), quiet = TRUE, verbose = FALSE)
-remotes::install_github("insightsengineering/verdepcheck", quiet = TRUE, verbose = FALSE)
-remotes::install_github("r-lib/rcmdcheck#196", quiet = TRUE, verbose = FALSE) # TODO: remove when merged / linked issue fixed # nolint: line_length.
+install.packages(c("pak"), quiet = TRUE, verbose = FALSE)
+pak::pak(c("cli", "rlang", "pkgdepends", "desc"))
+pak::pak("insightsengineering/verdepcheck")
+pak::pak("r-lib/rcmdcheck")
 library(withr)
 
 args <- trimws(commandArgs(trailingOnly = TRUE))
@@ -28,6 +29,7 @@ catnl_param(path)
 catnl_param(extra_deps)
 catnl_param(build_args)
 catnl_param(check_args)
+catnl_param(strategy)
 catnl_param(additional_repositories)
 
 rlang::local_options(repos = c(getOption("repos"), additional_repositories))
@@ -53,7 +55,8 @@ cli::cli_h2("Installation proposal config:")
 x$ip$get_config()
 
 cli::cli_h2("Package DESCRIPTION file used (see Remotes section):")
-catnl(readLines(gsub(".*::", "", x$ip$get_refs())))
+catnl(readLines(file.path(gsub(".*::", "", x$ip$get_refs()), "DESCRIPTION")))
+
 
 cli::cli_h2("Dependency solution:")
 x$ip$get_solution()
@@ -78,14 +81,15 @@ if (inherits(x$ip, "pkg_installation_proposal") && # nolint: cyclocomp.
     grepl("*.dependency conflict$", format(x$ip$get_solution()$failures)[[1]])
 ) {
     cli::cli_h2("Supplementary solution (experimental):")
-    xx <- pkgdepends::new_pkg_deps(
+    xx <- pkgdepends::new_pkg_installation_proposal(
         trimws(strsplit(
             desc::desc(
-                gsub("deps::", "", x$ip$get_refs())
+                file.path(gsub("deps::", "", x$ip$get_refs()), "DESCRIPTION")
             )$get_field("Config/Needs/verdepcheck")
         , ",")[[1]]),
         config = list(library = tempfile())
     )
+    class(xx) <- class(x$ip)
     verdepcheck:::solve_ip(xx)
     xx$get_solution()
 }
