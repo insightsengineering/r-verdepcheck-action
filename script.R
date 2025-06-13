@@ -12,7 +12,7 @@ catnl("\n── \033[1mInstall required packages\033[22m ───────�
 
 install.packages(c("pak"), quiet = TRUE, verbose = FALSE)
 pak::pak(c("cli", "rlang", "pkgdepends", "desc"))
-pak::pak("insightsengineering/verdepcheck#61")
+pak::pak("insightsengineering/verdepcheck")
 pak::pak("r-lib/rcmdcheck")
 library(withr)
 
