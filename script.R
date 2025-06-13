@@ -13,7 +13,7 @@ catnl("\n── \033[1mInstall required packages\033[22m ───────�
 install.packages(c("pak"), quiet = TRUE, verbose = FALSE)
 pak::pak(c("cli", "rlang", "pkgdepends", "desc"))
 pak::pak("insightsengineering/verdepcheck")
-pak::pak("r-lib/rcmdcheck")
+pak::pak("r-lib/rcmdcheck") # Required due to #196 TODO: remove when released # nolint: line_length.
 library(withr)
 
 args <- trimws(commandArgs(trailingOnly = TRUE))
@@ -55,8 +55,8 @@ cli::cli_h2("Installation proposal config:")
 x$ip$get_config()
 
 cli::cli_h2("Package DESCRIPTION file used (see Remotes section):")
-catnl(readLines(file.path(gsub(".*::", "", x$ip$get_refs()), "DESCRIPTION")))
-
+desc_path <- file.path(gsub(".*::", "", x$ip$get_refs()), "DESCRIPTION")
+catnl(readLines(desc_path))
 
 cli::cli_h2("Dependency solution:")
 x$ip$get_solution()
@@ -83,9 +83,7 @@ if (inherits(x$ip, "pkg_installation_proposal") && # nolint: cyclocomp.
     cli::cli_h2("Supplementary solution (experimental):")
     xx <- pkgdepends::new_pkg_installation_proposal(
         trimws(strsplit(
-            desc::desc(
-                file.path(gsub("deps::", "", x$ip$get_refs()), "DESCRIPTION")
-            )$get_field("Config/Needs/verdepcheck")
+            desc::desc(desc_path)$get_field("Config/Needs/verdepcheck")
         , ",")[[1]]),
         config = list(library = tempfile())
     )
